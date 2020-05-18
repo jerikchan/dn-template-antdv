@@ -1,0 +1,42 @@
+init:
+  - name: pkginfo
+
+dev:
+  - name: clean
+  - name: webpack
+    watch: true
+    loaders:
+      - test: !!js/regexp /\.less$/
+        loader: less-loader
+        options: 
+          modifyVars:
+            primary-color: '#1da57a'
+        enforce: 'pre'
+  - name: server
+  - name: browser-sync
+
+build:
+  - name: clean
+  - name: webpack
+    entry: ./src/faicomponent.js
+    compress: false
+    common:
+      disabled: true
+    loaders:
+      - test: !!js/regexp /\.less$/
+        loader: less-loader
+        options: 
+          modifyVars:
+            primary-color: '#1da57a'
+        enforce: 'pre'
+
+test:
+  - name: lint
+  - name: unit
+
+publish:
+  - name: shell
+    script:
+      - dn test
+      - dn build
+      - npm pu
